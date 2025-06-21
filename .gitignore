@@ -1,0 +1,14 @@
+*.log
+output_h5/
+outputs/
+helper/
+results/
+results_aligned/
+postprocessing_test/
+*.npy
+*.h5
+*.gz
+figure/
+demos/
+README.md
+.vscode/

@@ -1,0 +1,8 @@
+LICENSE
+README.md
+setup.py
+connectomics.egg-info/PKG-INFO
+connectomics.egg-info/SOURCES.txt
+connectomics.egg-info/dependency_links.txt
+connectomics.egg-info/requires.txt
+connectomics.egg-info/top_level.txt

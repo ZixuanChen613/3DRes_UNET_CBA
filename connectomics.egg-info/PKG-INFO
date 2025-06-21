@@ -1,0 +1,14 @@
+Metadata-Version: 2.2
+Name: connectomics
+Version: 0.1
+Summary: Automatic Reconstruction of Connectomics with PyTorch
+Home-page: https://github.com/zudi-lin/pytorch_connectomics
+Author: Zudi Lin, Donglai Wei
+License: MIT
+License-File: LICENSE
+Requires-Dist: scipy
+Dynamic: author
+Dynamic: home-page
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: summary

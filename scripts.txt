@@ -1,0 +1,174 @@
+--------------------------------------------
+training
+--------------------------------------------
+
+python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml
+python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml  --checkpoint outputs/dataset_output_1021_16_256_256_411/checkpoint_199500.pth.tar
+python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml  --checkpoint outputs/dataset_output_0302/checkpoint_199500.pth.tar
+nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml  --checkpoint outputs/dataset_output_16_192_192/checkpoint_199500.pth.tar > output_train_val_1020_16_128_128.log 2>&1 &
+
+nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml  > output_train_val_1020_16_192_192.log 2>&1 &
+nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml  > output_1105_16_256_256_unet_res_csa_ba2.log 2>&1 &  
+
+nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml  > output_train_640_0403_unet_res_ca.log 2>&1 &
+
+CUDA_VISIBLE_DEVICES=2,3 nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml  > output_train_640_0403_unet_res_ba.log 2>&1 &
+
+
+nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml  > output_train_640_0403_unet_residual_3d.log 2>&1 &
+---------------------------------------------
+validation
+---------------------------------------------
+1. create val_gt.h5 file by using scripts/tools/convert_img_hdf5.py
+
+2. you can refer to connectomics/utils/evaluation/iteration_eval.py
+
+
+
+modify the  INFERENCE.INPUT_SIZE !!!!!!!!!!!!!!!!!!!!!
+modify the  INFERENCE.OUTPUT_PATH
+modify the yaml.file 16,128,128
+
+modify the paras as following
+parser = argparse.ArgumentParser(description="Model Inference.")
+parser.add_argument('--model', type=int, default=297000, help='index number of the model')
+parser.add_argument('--root-path', type=str, default="/braindat/lab/limx/MitoEM2021/CODE/HUMAN/rsunet_retrain_297000_v2_biyelunwen", help='root dir path')
+parser.add_argument('--gt-path', type=str, default="/braindat/lab/limx/MitoEM2021/MitoEM-H/MitoEM-H/human_val_gt.h5", help='root dir path')
+parser.add_argument('--ngpus', type=int, default=4, help='gpu number')
+parser.add_argument('--ncpus', type=int, default=8, help='cpu number')
+parser.add_argument('--bs', type=int, default=8, help='total batch size')
+parser.add_argument('--naug', type=int, default=4, help='test time augmentation, 4 or 16')
+parser.add_argument('--stride', nargs='+', default=[1,256,256], type=int, help='basic stride of the sliding window')
+parser.add_argument('--window-size', nargs='+', default=[100,256,256], type=int, help='basic size of the sliding window')
+
+
+
+
+then run 
+
+python connectomics/utils/evaluation/iteration_eval.py
+
+nohup python connectomics/utils/evaluation/iteration_eval.py --bs 8 --naug 0 > val_output_1031_16_256_256_411.log 2>&1 &
+--------------------------
+
+nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml  > output_train_val_1019_16_128_128.log 2>&1 &
+
+
+
+
+nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml --checkpoint outputs/dataset_output_1030_16_256_256_411/checkpoint_199500.pth.tar --inference  > output_test_1111.log 2>&1 &
+
+
+
+
+--------------------------
+validation stage
+--------------------------
+
+modify the following:
+
+
+##################################
+
+DATA_CHUNK_NUM: [1, 1, 1]
+
+INFERENCE.IMAGE_NAME
+INFERENCE.OUTPUT_PATH
+
+##################################
+
+
+
+python scripts/main.py \
+    --config-file configs/MitoEM/MitoEM-R-BC.yaml \
+    --inference \
+    --do_h5 \
+    --checkpoint outputs/dataset_output_640_0403_unet_residual_3d/checkpoint_189000.pth.tar
+
+
+
+--------------------------
+evaluation stage
+--------------------------
+
+python connectomics/utils/evaluation/evaluate.py -gt ssEM_val_data2_v1_1118.h5 -p /data/sjwlab/chenzx/code/ssEM_seg/postprocessing_test/199500_test_1202_thres_500_0.04.h5 -o results/val_output_1202/unetr3d_transformer_csa_thres_500_0.04
+
+python connectomics/utils/evaluation/evaluate.py -gt ssEM_val_data2_v1_1118.h5 -p xxx -o xxx
+
+python connectomics/utils/evaluation/evaluate.py -gt ssEM_val_data2_v1_1118.h5 -p /data/sjwlab/chenzx/code/ssEM_seg/199500_test_0110.h5 -o results/test_0110
+
+python connectomics/utils/evaluation/evaluate.py -gt ssEM_val_data2_v1_1118.h5 -p output_h5/test1204_v4/199500_test1204_mask_thres_0200_thres_seedpoint_0500.h5 -o results/baseline_0208
+
+
+-------------------------
+
+mask_1118  data1_crop1
+
+data1_crop2_v1  [640 640 251]
+
+正在标注的数据
+semantic_mask_crop2_1202.npy  semantic_mask_crop2_1202  E:\seg_ssEM_data1\crop2_1202
+
+
+
+
+
+nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml  --checkpoint outputs/dataset_output_0302/checkpoint_199500.pth.tar > output_train_0310.log 2>&1 & 
+/data/sjwlab/chenzx/code/ssEM_seg/outputs/dataset_output_0302/checkpoint_199500.pth.tar
+
+
+
+nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml --inference --do_h5 --checkpoint outputs/dataset_output_0310/checkpoint_298500.pth.tar > test_1024_0312.log 2>&1 &
+
+
+
+outputs/inference_output_0310/298500_out_100_256_256_stride_1_128_128_aug_0_pad_0.h5
+
+python connectomics/utils/evaluation/evaluate.py 
+-gt test_100_gt_0310.h5 
+-p outputs/inference_output_unet_res_ba_0412_without_pp/193500_out_32_256_256_stride_1_128_128_aug_0_pad_16.h5
+-o results/640_0403_unet_residual_3d
+
+
+
+python connectomics/utils/evaluation/evaluate.py \
+-gt ssEM_val_data2_v1_1118.h5 \
+-p outputs/inference_output_unet_res_ca_0412_without_pp/198000_out_32_256_256_stride_1_128_128_aug_0_pad_16.h5 \
+-o results/640_unet_res_ca_0412_without_pp
+
+
+
+
+outputs/inference_output_3DRes_UNet_CBA/199500_out_32_256_256_stride_1_128_128_aug_0_pad_16.h5
+
+
+outputs/inference_output_1024_0323/298500_out_16_256_256_stride_1_128_128_aug_0_pad_0.h5
+
+python connectomics/utils/evaluation/evaluate.py \
+-gt test_100_gt_0310.h5 \
+-p outputs/inference_output_1024_0323/298500_out_16_256_256_stride_1_128_128_aug_0_pad_0.h5 \
+-o results/test_0323
+
+
+
+nohup python scripts/main.py --config-file configs/MitoEM/MitoEM-R-BC.yaml --inference --do_h5 --checkpoint outputs/dataset_output_0310/checkpoint_298500.pth.tar > test_640_0312.log 2>&1 &
+
+
+
+
+
+
+test/ validation
+
+nohup python scripts/main.py \
+    --config-file configs/MitoEM/MitoEM-R-BC.yaml \
+    --inference \
+    --do_h5 \
+    --checkpoint outputs/dataset_output_640_0329_cba/checkpoint_189000.pth.tar > test_0614.log 2>&1 &
+
+
+nohup python helper/post_process.py > post_0604.log 2>&1 &
+
+nohup python -u helper/post_process.py > post_0609.log 2>&1 &
+
+nohup python -u helper/save_theta_map.py > post_0617.log 2>&1 &
