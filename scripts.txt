@@ -172,3 +172,21 @@ nohup python helper/post_process.py > post_0604.log 2>&1 &
 nohup python -u helper/post_process.py > post_0609.log 2>&1 &
 
 nohup python -u helper/save_theta_map.py > post_0617.log 2>&1 &
+
+nohup python -u helper/np2tiiff.py > post_0625.log 2>&1 &
+
+nohup python -u helper/save_theta_phi.py > post_0626_v1.log 2>&1 &
+
+
+nohup python -u helper/save_theta_phi_map.py > post_0626_s2.log 2>&1 &
+nohup python -u helper/read_vol.py > post_0703.log 2>&1 &
+
+
+nohup python -u helper/stat_excel.py > post_0716.log 2>&1 &
+nohup python -u helper/stat_excel.py > post_0909.log 2>&1 &
+
+
+nohup python -u helper/save_long_theta_phi_map.py > post_0910.log 2>&1 &
+
+nohup python -u helper/volume_map.py > post_1202.log 2>&1 &
+
